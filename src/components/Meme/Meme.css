@@ -41,6 +41,10 @@ main {
     font-family: "Karla", sans-serif;
     cursor: pointer;
 }
+/* 9. How could we change our css so that when the button has the disabled attribute, its background is grey to indicate its loading? */
+.meme-submit:disabled {
+    background: grey;
+}
 
 .meme--img {
     width: 477px;
@@ -48,4 +52,8 @@ main {
     object-fit: contain;
     border-radius: 2px;
     margin-top: 36.5px;
+}
+
+.loading__text {
+    color: black
 }
