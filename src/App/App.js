@@ -26,14 +26,13 @@ function App() {
     generateMeme()
   }
 
-  const getMemesData = () => {
-    axios.get("https://api.imgflip.com/get_memes")
-      .then(response => setMemesData(response.data.data.memes))
-      .catch(e => console.log(e))
+  const getMemesData = async () => {
+    const response = await axios.get("https://api.imgflip.com/get_memes")
+    setMemesData(response.data.data.memes);
   }
 
-  const generateMeme = () => {
-    axios.post("https://whispering-garden-15850.herokuapp.com/https://api.imgflip.com/caption_image", {}, {
+  const generateMeme = async () => {
+    const response = await axios.post("https://whispering-garden-15850.herokuapp.com/https://api.imgflip.com/caption_image", {}, {
       params: {
         template_id: randomMeme.id,
         username: XXX,
@@ -42,8 +41,7 @@ function App() {
         text1: bottomText.current.value
       }
     })
-      .then(response => setGeneratedMeme(response.data.data))
-      .catch(e => console.log(e))
+    setGeneratedMeme(response.data.data)
   }
 
   return (
