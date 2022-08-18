@@ -14,7 +14,6 @@ export default function Meme(props) {
                 <button onClick={e => { props.handleClick(e) }} type="submit" className="meme-submit">Get a new meme image &#128444;</button>
             </form>
             {/* 13. What could we render here if our new property is true instead of the image? We want to show the user something is loading... */}
-            {!props.isLoading ? <img src={props.generatedMeme.url} className="meme--img" /> : <p className="meme--img loading__text">Loading...</p>}
         </main >
     )
 }
