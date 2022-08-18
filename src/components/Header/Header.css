@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+.header {
+    height: 65px;
+    background: linear-gradient(90deg, #672280 1.18%, #A626D3 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+}
+
+.header--title-section {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.header--icon {
+    height: 35px;
+}
+
+.header--title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 24.25px;
+    letter-spacing: -0.08em;
+    margin-left: 7px;
+}
+
+.header--course-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 15px;
+    margin-right: 37px;
+}
