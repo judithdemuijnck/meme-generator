@@ -2,58 +2,64 @@ import './App.css';
 import Header from '../components/Header/Header';
 import Meme from '../components/Meme/Meme';
 import axios from "axios";
-import { useEffect, useState, useRef } from 'react';
-
+import { useState, useRef } from 'react';
 
 function App() {
-  const [memesData, setMemesData] = useState([]);
-  const [randomMeme, setRandomMeme] = useState([]);
-  const [generatedMeme, setGeneratedMeme] = useState([false]);
+  const [generatedMeme, setGeneratedMeme] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
   const topText = useRef("");
   const bottomText = useRef("");
 
-
-  // useEffect(() => {
-
-  // }, [memesData])
-
-
-  const memeGenerator = (event) => {
+  const memeGenerator = async (event) => {
     event.preventDefault();
-    getMemesData()
-    const randomNum = Math.floor(Math.random() * memesData.length) + 1;
-    setRandomMeme(memesData[randomNum]);
-    generateMeme()
+    setIsLoading(true);
+    const memesData = await getMemesData()
+    const randomMeme = getRandomMeme(memesData);
+    await generateMeme(randomMeme);
+    setIsLoading(false);
   }
 
   const getMemesData = async () => {
-    const response = await axios.get("https://api.imgflip.com/get_memes")
-    setMemesData(response.data.data.memes);
+    try {
+      const response = await axios.get("https://api.imgflip.com/get_memes")
+      return response.data.data.memes;
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  const generateMeme = async () => {
-    const response = await axios.post("https://whispering-garden-15850.herokuapp.com/https://api.imgflip.com/caption_image", {}, {
-      params: {
-        template_id: randomMeme.id,
-        username: XXX,
-        password: XXX,
-        text0: topText.current.value,
-        text1: bottomText.current.value
-      }
-    })
-    setGeneratedMeme(response.data.data)
+  const getRandomMeme = (memesData) => {
+    const randomNum = Math.floor(Math.random() * memesData.length) + 1;
+    return memesData[randomNum]
+  }
+
+  const generateMeme = async (meme) => {
+    try {
+      const response = await axios.post("https://whispering-garden-15850.herokuapp.com/https://api.imgflip.com/caption_image", {}, {
+        params: {
+          template_id: meme.id,
+          username: window.username || process.env.REACT_APP_IMGFLIP_USERNAME,
+          password: window.password || process.env.REACT_APP_IMGFLIP_PASSWORD,
+          text0: topText.current.value,
+          text1: bottomText.current.value
+        }
+      })
+      setGeneratedMeme(response.data.data)
+    } catch (e) {
+      console.log(e)
+    }
+
   }
 
   return (
     <div className="App">
       <Header />
       <Meme
-        memesData={memesData}
         handleClick={memeGenerator}
         generatedMeme={generatedMeme}
         topText={topText}
-        bottomText={bottomText} />
-
+        bottomText={bottomText}
+        isLoading={isLoading} />
     </div>
   );
 }

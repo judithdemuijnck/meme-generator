@@ -6,14 +6,12 @@ main {
     margin: 36px 36.5px;
 }
 
-
-
-.meme-input {
+.meme--input {
     display: flex;
     justify-content: space-between;
 }
 
-.meme-input input {
+.meme--input input {
     width: 230px;
     height: 35px;
     border: 1px solid #D5D4D8;
@@ -25,10 +23,10 @@ main {
     font-family: "Karla", sans-serif;
 }
 
-.meme-submit {
+.meme--submit-btn {
     width: 477px;
     height: 40px;
-    background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
+    background: linear-gradient(90.41deg, #721f8d 1.14%, #A818DA 100%);
     border-radius: 5px;
     border: none;
     color: white;
@@ -42,10 +40,20 @@ main {
     cursor: pointer;
 }
 
+.meme--submit-btn:disabled {
+    background: grey;
+    cursor: not-allowed;
+}
+
 .meme--img {
     width: 477px;
     height: 268px;
     object-fit: contain;
     border-radius: 2px;
     margin-top: 36.5px;
+}
+
+.meme--img.loading-text {
+    color: black;
+    cursor: wait;
 }
