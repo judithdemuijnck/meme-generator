@@ -28,7 +28,7 @@ export default function Meme(props) {
                 // 11b: Loading is now false - show me the image!
                 style={{display: !props.isLoading ? 'block': 'none'}}
                 // 8. When the network request to get the image finishes, the 'onLoad' event handler will fire, and send a callback to the parent
-                onLoad={props.onLoadedmeme}
+                onLoad={props.onLoadedMeme}
                 // 8. (alt) If the network request to get the image errors, the 'onError' event handler will fire, and send a callback to the parent
                 onError={props.onMemeError}
                 // Aside. I just put an alt tag in here because my linter was complaining
