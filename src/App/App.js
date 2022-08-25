@@ -7,15 +7,13 @@ import { useState } from 'react';
 function App() {
   const [generatedMeme, setGeneratedMeme] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [topText, setTopText] = useState({ value: "" })
-  const [bottomText, setBottomText] = useState({ value: "" })
 
-  const memeGenerator = async (event) => {
+  const memeGenerator = async (event, topText, bottomText) => {
     event.preventDefault();
     setIsLoading(true);
     const memesData = await getMemesData()
     const randomMeme = getRandomMeme(memesData);
-    await generateMeme(randomMeme);
+    await generateMeme(randomMeme, topText, bottomText);
     setIsLoading(false);
   }
 
@@ -33,28 +31,20 @@ function App() {
     return memesData[randomNum]
   }
 
-  const generateMeme = async (meme) => {
+  const generateMeme = async (meme, text0, text1) => {
     try {
       const response = await axios.post("https://whispering-garden-15850.herokuapp.com/https://api.imgflip.com/caption_image", {}, {
         params: {
           template_id: meme.id,
           username: window.username || process.env.REACT_APP_IMGFLIP_USERNAME,
           password: window.password || process.env.REACT_APP_IMGFLIP_PASSWORD,
-          text0: topText.value,
-          text1: bottomText.value
+          text0: text0.value,
+          text1: text1.value
         }
       })
       setGeneratedMeme(response.data.data)
     } catch (e) {
       console.log(e)
-    }
-  }
-
-  function handleChange(event) {
-    if (event.target.id === "topText") {
-      setTopText({ value: event.target.value })
-    } else if (event.target.id === "bottomText") {
-      setBottomText({ value: event.target.value })
     }
   }
 
@@ -64,9 +54,6 @@ function App() {
       <Meme
         handleClick={memeGenerator}
         generatedMeme={generatedMeme}
-        handleChange={handleChange}
-        topText={topText}
-        bottomText={bottomText}
         isLoading={isLoading} />
     </div>
   );
