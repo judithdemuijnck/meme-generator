@@ -6,8 +6,8 @@ export default function Meme(props) {
         <main>
             <form>
                 <div className="meme--input">
-                    <input ref={props.topText} type="text" placeholder="Top Text"></input>
-                    <input ref={props.bottomText} type="text" placeholder="Bottom Text"></input>
+                    <input onChange={e => props.handleChange(e)} value={props.topText.value} id="topText" type="text" placeholder="Top Text"></input>
+                    <input onChange={e => props.handleChange(e)} value={props.bottomText.value} id="bottomText" type="text" placeholder="Bottom Text"></input>
                 </div>
 
                 <button

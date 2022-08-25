@@ -2,13 +2,13 @@ import './App.css';
 import Header from '../components/Header/Header';
 import Meme from '../components/Meme/Meme';
 import axios from "axios";
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 function App() {
   const [generatedMeme, setGeneratedMeme] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const topText = useRef("");
-  const bottomText = useRef("");
+  const [topText, setTopText] = useState({ value: "" })
+  const [bottomText, setBottomText] = useState({ value: "" })
 
   const memeGenerator = async (event) => {
     event.preventDefault();
@@ -40,15 +40,22 @@ function App() {
           template_id: meme.id,
           username: window.username || process.env.REACT_APP_IMGFLIP_USERNAME,
           password: window.password || process.env.REACT_APP_IMGFLIP_PASSWORD,
-          text0: topText.current.value,
-          text1: bottomText.current.value
+          text0: topText.value,
+          text1: bottomText.value
         }
       })
       setGeneratedMeme(response.data.data)
     } catch (e) {
       console.log(e)
     }
+  }
 
+  function handleChange(event) {
+    if (event.target.id === "topText") {
+      setTopText({ value: event.target.value })
+    } else if (event.target.id === "bottomText") {
+      setBottomText({ value: event.target.value })
+    }
   }
 
   return (
@@ -57,6 +64,7 @@ function App() {
       <Meme
         handleClick={memeGenerator}
         generatedMeme={generatedMeme}
+        handleChange={handleChange}
         topText={topText}
         bottomText={bottomText}
         isLoading={isLoading} />
