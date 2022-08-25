@@ -12,11 +12,12 @@ function App() {
 
   const memeGenerator = async (event) => {
     event.preventDefault();
+    // 2. Set loading is now true
     setIsLoading(true);
     const memesData = await getMemesData()
     const randomMeme = getRandomMeme(memesData);
     await generateMeme(randomMeme);
-    setIsLoading(false);
+    // 3. We don't set loading here now - thats now triggered by image load!
   }
 
   const getMemesData = async () => {
@@ -44,6 +45,7 @@ function App() {
           text1: bottomText.current.value
         }
       })
+      // 4. generatedMeme is now set...
       setGeneratedMeme(response.data.data)
     } catch (e) {
       console.log(e)
@@ -56,10 +58,16 @@ function App() {
       <Header />
       <Meme
         handleClick={memeGenerator}
+        // 6. Generated meme is sent through to the component
         generatedMeme={generatedMeme}
         topText={topText}
         bottomText={bottomText}
-        isLoading={isLoading} />
+        // 10. Isloading is now false...
+        isLoading={isLoading}
+        // 9. Callback from the child - set loading false!
+        onLoadedMeme={() => setIsLoading(false)} 
+        onMemeError={() => setIsLoading(false)}
+        />
     </div>
   );
 }
