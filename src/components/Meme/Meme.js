@@ -2,23 +2,25 @@ import "./Meme.css";
 import { useState } from "react";
 
 export default function Meme(props) {
-    const [topText, setTopText] = useState({ value: "" });
-    const [bottomText, setBottomText] = useState({ value: "" });
-
-    function handleChange(event) {
-        if (event.target.id === "topText") {
-            setTopText({ value: event.target.value })
-        } else if (event.target.id === "bottomText") {
-            setBottomText({ value: event.target.value })
-        }
-    }
+    const [topText, setTopText] = useState("");
+    const [bottomText, setBottomText] = useState("");
 
     return (
         <main>
             <form>
                 <div className="meme--input">
-                    <input onChange={handleChange} value={topText.value} id="topText" type="text" placeholder="Top Text"></input>
-                    <input onChange={handleChange} value={bottomText.value} id="bottomText" type="text" placeholder="Bottom Text"></input>
+                    <input
+                        onChange={e => setTopText(e.target.value)}
+                        value={topText}
+                        type="text"
+                        placeholder="Top Text">
+                    </input>
+                    <input
+                        onChange={e => setBottomText(e.target.value)}
+                        value={bottomText}
+                        type="text"
+                        placeholder="Bottom Text">
+                    </input>
                 </div>
 
                 <button
@@ -27,8 +29,17 @@ export default function Meme(props) {
                 </button>
             </form>
 
-            {!props.isLoading ? props.generatedMeme && <img src={props.generatedMeme.url} alt="meme" className="meme--img" /> : <h1 className="meme--img loading-text">Loading Meme...</h1>}
+            {props.isLoading && <h1 className="meme--img loading-text">Loading Meme...</h1>}
 
+            {props.generatedMeme &&
+                <img
+                    src={props.generatedMeme.url}
+                    alt="meme"
+                    className="meme--img"
+                    style={{ display: !props.isLoading ? "block" : "none" }}
+                    onLoad={props.onLoadedMeme}
+                // onError={props.onMemeError}
+                />}
         </main >
     )
 } 

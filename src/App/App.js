@@ -2,28 +2,25 @@ import './App.css';
 import Header from '../components/Header/Header';
 import Meme from '../components/Meme/Meme';
 import axios from "axios";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [memesData, setMemesData] = useState([]);
   const [generatedMeme, setGeneratedMeme] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    axios.get("https://api.imgflip.com/get_memes")
+      .then(response => setMemesData(response.data.data.memes))
+      .catch(e => console.log(e))
+    console.log(memesData)
+  }, [])
 
   const memeGenerator = async (event, topText, bottomText) => {
     event.preventDefault();
     setIsLoading(true);
-    const memesData = await getMemesData()
     const randomMeme = getRandomMeme(memesData);
     await generateMeme(randomMeme, topText, bottomText);
-    setIsLoading(false);
-  }
-
-  const getMemesData = async () => {
-    try {
-      const response = await axios.get("https://api.imgflip.com/get_memes")
-      return response.data.data.memes;
-    } catch (e) {
-      console.log(e)
-    }
   }
 
   const getRandomMeme = (memesData) => {
@@ -38,8 +35,8 @@ function App() {
           template_id: meme.id,
           username: window.username || process.env.REACT_APP_IMGFLIP_USERNAME,
           password: window.password || process.env.REACT_APP_IMGFLIP_PASSWORD,
-          text0: text0.value,
-          text1: text1.value
+          text0: text0,
+          text1: text1
         }
       })
       setGeneratedMeme(response.data.data)
@@ -54,7 +51,10 @@ function App() {
       <Meme
         handleClick={memeGenerator}
         generatedMeme={generatedMeme}
-        isLoading={isLoading} />
+        isLoading={isLoading}
+        onLoadedMeme={() => setIsLoading(false)}
+      // onMemeError={() => setIsLoading(false)} 
+      />
     </div>
   );
 }
